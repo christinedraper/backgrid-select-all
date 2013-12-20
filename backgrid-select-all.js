@@ -176,6 +176,12 @@
       this.listenTo(collection, "remove", function (model) {
         delete selectedModels[model.id || model.cid];
       });
+      
+      this.listenTo(collection, "reset", function (model) {
+        for (var modelId in selectedModels) {
+          delete selectedModels[modelId];
+       	}
+      });
 
       this.listenTo(collection, "backgrid:refresh", function () {
         this.$el.find(":checkbox").prop("checked", false);
@@ -196,7 +202,7 @@
     },
 
     /**
-       Progagates the checked value of this checkbox to all the models of the
+       Propagates the checked value of this checkbox to all the models of the
        underlying collection by triggering a Backbone `backgrid:select` event on
        the models themselves, passing each model and the current `checked` value
        of the checkbox in each event.
